@@ -1,29 +1,38 @@
 class Solution {
 public:
-
-// APPROACH1---->  using the Set data Structure to prevent the duplicate permutations.
-    void permuteUniqueAll(vector<int>& nums, int index, vector<int>& perm,
-                          set<vector<int>>& st) {
+    // APPROACH1---->  using the Set data Structure to prevent the duplicate
+    // permutations.
+    void permuteUniqueAll(vector<int>& nums, int j, vector<vector<int>>& ans) {
         // base case
 
-        if (index >= nums.size())
+        if (j == nums.size()) {
+            ans.push_back(nums);
             return;
-
+        }
+        // unordered_map to keep track wether an element is used before or not
+        unordered_map<int, bool> mpp;
         // 1 case i will solve
 
-        for (int j = index; j < nums.size(); j++) {
+        for (int i = j; i < nums.size(); i++) {
+
+            if (mpp.find(nums[i]) != mpp.end()) {
+                // enetry found
+                continue;
+            }
+
+            // if not then we will add in tmap
+            mpp[nums[i]] = false;
 
             // swap
-            swap(nums[index], nums[j]);
+            swap(nums[j], nums[i]);
 
             // insert the permuatoin in the set
-            st.insert(nums);
 
-            permuteUniqueAll(nums, index + 1, perm, st);
+            permuteUniqueAll(nums, j + 1, ans);
 
             // backtracck
 
-            swap(nums[index], nums[j]);
+            swap(nums[j], nums[i]);
         }
 
         // recursion call
@@ -31,17 +40,15 @@ public:
 
     vector<vector<int>> permuteUnique(vector<int>& nums) {
 
-        // brute force ->>> genrate all the permutatins and insert in the set
-
-        vector<int> perm;
         int index = 0;
-        set<vector<int>> st;
+        vector<vector<int>> ans;
+
+        sort(nums.begin(), nums.end());
 
         // fin call
 
-        permuteUniqueAll(nums, index, perm, st);
+        permuteUniqueAll(nums, index, ans);
 
-        vector<vector<int>> ans(st.begin(), st.end());
         return ans;
     }
 };
