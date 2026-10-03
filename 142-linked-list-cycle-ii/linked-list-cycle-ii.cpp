@@ -8,27 +8,28 @@
  */
 class Solution {
 public:
-    ListNode *detectCycle(ListNode *head) {
-        //maintain a trck of visisted Nodes
-        //revisit == cycle statrt from theeir
+    ListNode* detectCycle(ListNode* head) {
+        //  FLOYDES CYCLE ALGO
+        ListNode* slow = head;
+        ListNode* fast = head;
+        // step 1: find the cycle
 
-        unordered_map<ListNode*,bool>visited;
+        while (fast != NULL && fast->next != NULL) {
 
-        ListNode*temp=head;
-        while(temp!=NULL){
-
-            if(visited[temp]==true){
-                return temp;
-            }else{
-                //mark it visited
-                visited[temp]=true;
-                temp=temp->next;
+            slow = slow->next;
+            fast = fast->next->next;
+            if (slow == fast) {
+                // step2: reset the fast to the head
+                fast = head;
+                // step3:find the cycle again and return the meeting Node
+                while (fast != slow) {
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+                return fast;
             }
-
         }
-
-        //reaching here means no cycle deetcted above
+        //reaching here means no Cycle is there...
         return NULL;
-        
     }
 };
