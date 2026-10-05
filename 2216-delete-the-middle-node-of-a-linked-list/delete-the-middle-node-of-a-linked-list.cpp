@@ -10,49 +10,40 @@
  */
 class Solution {
 public:
-    int lengthOfLL(ListNode*& head) {
-        ListNode* temp = head;
-        int cnt = 0;
-        while (temp != NULL) {
-            cnt++;
-            temp = temp->next;
-        }
-
-        return cnt;
-    }
+  
     ListNode* deleteMiddle(ListNode* head) {
         //Base case for 1 Node
+        //USING THE MODDIFIED TORTOISE AND HEAR ALGO TO REACH NODE BEFORE MIDDLE NODE
 
-        if(head->next==NULL){
+
+
+        if(head==NULL || head->next==NULL){
             return NULL;
         }
 
-        // Middle Node is the n/2 th Node
-        // ll  based so MID node n/2+1 th Node
-        // STep3:reach the n/2 Node by traverseing N-2 Nodes
+        ListNode*slow=head;
+        ListNode*fast=head;
 
-        int n = lengthOfLL(head);
-        int middleNode = (n / 2) + 1;
+        //waiting slow for one step to rach Middle-1 th node
+        fast=fast->next->next;
 
-        // traverse (n/2+1)-2  times to rach n/2th Node..
-        int travserseLength = ((n / 2) + 1) - 2;
-        ListNode* prev = head;
+        while(fast!=NULL && fast->next!=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
 
-        for (int i = 1; i <= travserseLength; i++) {
-            prev = prev->next;
         }
-        ListNode* crr = prev->next;
+        //slow is at the middle -1 the node
+        ListNode*middleNode=slow->next;
 
-        ListNode* frd = crr->next;
 
-        // set pointers
+        slow->next=slow->next->next;
+        //delete the middle Node
 
-        // delete Node.
+        middleNode->next=NULL;
+        delete middleNode;
 
-        prev->next = frd;
-        crr->next = NULL;
-        delete crr;
 
         return head;
+
     }
 };
