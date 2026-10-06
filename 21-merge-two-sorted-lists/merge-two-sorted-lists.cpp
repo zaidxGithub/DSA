@@ -12,54 +12,35 @@ class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
 
-        if (list1 == NULL)
-            return list2;
-        if (list2 == NULL)
-            return list1;
+        // T:S-Comp= O(l1+l2) , O(1)
 
-        ListNode* temp1 = list1;
-        ListNode* temp2 = list2;
+    if(list1==NULL)return list2;
+    if(list2==NULL)return list1;
 
-        ListNode* newNode = new ListNode(-1000);
-        ListNode* head = newNode;
-        ListNode* temp3 = head;
+    ListNode*l1=list1;
+    ListNode*l2=list2;
 
-        while (temp1 != NULL && temp2!= NULL) {
+    //make the l1 the smller one
 
-            // step1;
-            if (temp1->val <= temp2->val) {
-                // isolte the temp1 Node and add in the newList and move the
-                // temp1
-                // temp1->next = NULL;
-                // add in the list
-                temp3->next = temp1;
-                // increment both
-                temp1 = temp1->next;
-               
-                temp3 = temp3->next;
+    if(l1->val>l2->val) swap(l1,l2);
 
-            } else {
+    ListNode*smallerHead=l1;
+    while(l1!=NULL && l2 !=NULL){
 
-                // grater than
-                // isolte the temp2 Node and add in the newList and move the
-                // temp2
+        //make temp var to store preis location
+        ListNode*temp=NULL;
 
-                // temp2->next = NULL;
-                temp3->next = temp2;
-                temp2 = temp2->next;
-                // frd2 = frd2->next;
-                temp3 = temp3->next;
-            }
+        while(l1!=NULL && l1->val<=l2->val){
+            temp=l1;
+            l1=l1->next;
+
         }
+        //link the temp with l2
+        temp->next=l2;
+        swap(l1,l2);
+    }
 
-        // means one of the List are empty now
-        if (temp1 != NULL) {
-            temp3->next = temp1;
-        }
-        if (temp2 != NULL) {
-            temp3->next = temp2;
-        }
-
-        return head->next;
+    return smallerHead;
+        
     }
 };
